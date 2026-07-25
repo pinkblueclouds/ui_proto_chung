@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ui_proto_original</string>
+    <string name="default_string">There are no current active symptoms</string>
 </resources>
