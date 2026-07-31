@@ -27,6 +27,11 @@
             android:name=".SymptomsActivity"
             android:theme="@style/Theme.Ui_proto_original">
         </activity>
+
+        <activity
+            android:name=".SymptomsHistoryActivity"
+            android:theme="@style/Theme.Ui_proto_original">
+        </activity>
     </application>
 
 </manifest>

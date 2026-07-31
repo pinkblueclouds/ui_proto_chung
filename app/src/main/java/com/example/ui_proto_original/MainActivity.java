@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,21 +16,26 @@ public class MainActivity extends AppCompatActivity {
 
     private LinearLayout symptomsContainer;
 
+    private Button history;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         symptomsContainer = findViewById(R.id.activeSymptomsList);
-
         symptomsContainer.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, SymptomsActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
         });
 
-
-
+        history = findViewById(R.id.historyButton);
+        history.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, SymptomsHistoryActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+        });
     }
 
     @Override

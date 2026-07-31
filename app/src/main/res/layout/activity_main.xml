@@ -98,6 +98,17 @@
             
         </LinearLayout>
 
+        <Button
+            android:id="@+id/historyButton"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:backgroundTint="@color/light_grey"
+            android:text="History"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:layout_marginStart="20dp"
+            />
+
 
     </LinearLayout>
 
