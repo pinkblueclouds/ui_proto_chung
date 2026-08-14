@@ -6,18 +6,20 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+//import java.util.concurrent.atomic.AtomicInteger;
 
 public class SymptomsActivity extends AppCompatActivity {
 
@@ -26,7 +28,7 @@ public class SymptomsActivity extends AppCompatActivity {
     private Map<String, Integer> symptomValues = new HashMap<>();
     private Map<String, View> activeSymptomViews = new HashMap<>();
     private Map<String, LinearLayout> customSymptomContainers = new HashMap<>();
-    private AtomicInteger customSymptomCounter = new AtomicInteger(0);
+    //private AtomicInteger customSymptomCounter = new AtomicInteger(0);
 
     private Button addChestPainButton, addBreathButton, addBleedingButton, addFeverButton;
     private Button addChillsButton, addMuscleAchesButton, addSoreThroatButton, addLossOfTasteButton;
@@ -54,6 +56,7 @@ public class SymptomsActivity extends AppCompatActivity {
         setupControlButtons();
         initializeSymptomValues();
         setupAutoSave();
+        loadSymptomsFromDatabase();
 
     }
 
@@ -61,6 +64,7 @@ public class SymptomsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         startAutoSave();
+        loadSymptomsFromDatabase();
     }
 
     @Override
@@ -119,27 +123,27 @@ public class SymptomsActivity extends AppCompatActivity {
     }
 
     private void setupAddButtonListeners() {
-        addChestPainButton.setOnClickListener(v -> addSymptom("Chest Pain", "chestPain", chestPainContainer, "Severe"));
-        addBreathButton.setOnClickListener(v -> addSymptom("Shortness of Breath", "breath", breathContainer, "Severe"));
-        addBleedingButton.setOnClickListener(v -> addSymptom("Bleeding", "bleeding", bleedingContainer, "Severe"));
-        addFeverButton.setOnClickListener(v -> addSymptom("Fever", "fever", feverContainer, "Severe"));
-        addChillsButton.setOnClickListener(v -> addSymptom("Chills", "chills", chillsContainer, "Severe"));
-        addMuscleAchesButton.setOnClickListener(v -> addSymptom("Muscle Aches", "muscleAches", muscleAchesContainer, "Severe"));
-        addSoreThroatButton.setOnClickListener(v -> addSymptom("Sore Throat", "soreThroat", soreThroatContainer, "Severe"));
-        addLossOfTasteButton.setOnClickListener(v -> addSymptom("Loss of Taste", "lossOfTaste", lossOfTasteContainer, "Complete"));
-        addLossOfSmellButton.setOnClickListener(v -> addSymptom("Loss of Smell", "lossOfSmell", lossOfSmellContainer, "Complete"));
-        addHeadacheButton.setOnClickListener(v -> addSymptom("Headache", "headache", headacheContainer, "Severe"));
-        addRashButton.setOnClickListener(v -> addSymptom("Rash", "rash", rashContainer, "Severe"));
-        addNauseaButton.setOnClickListener(v -> addSymptom("Nausea", "nausea", nauseaContainer, "Severe"));
-        addVomitingButton.setOnClickListener(v -> addSymptom("Vomiting", "vomiting", vomitingContainer, "Severe"));
-        addDiarrheaButton.setOnClickListener(v -> addSymptom("Diarrhea", "diarrhea", diarrheaContainer, "Severe"));
-        addConfusionButton.setOnClickListener(v -> addSymptom("Confusion", "confusion", confusionContainer, "Severe"));
-        addDizzyButton.setOnClickListener(v -> addSymptom("Dizzy", "dizzy", dizzyContainer, "Severe"));
+        addChestPainButton.setOnClickListener(v -> addSymptom("Chest Pain", "chestPain", chestPainContainer, "0"));
+        addBreathButton.setOnClickListener(v -> addSymptom("Shortness of Breath", "breath", breathContainer, "0"));
+        addBleedingButton.setOnClickListener(v -> addSymptom("Bleeding", "bleeding", bleedingContainer, "0"));
+        addFeverButton.setOnClickListener(v -> addSymptom("Fever", "fever", feverContainer, "0"));
+        addChillsButton.setOnClickListener(v -> addSymptom("Chills", "chills", chillsContainer, "0"));
+        addMuscleAchesButton.setOnClickListener(v -> addSymptom("Muscle Aches", "muscleAches", muscleAchesContainer, "0"));
+        addSoreThroatButton.setOnClickListener(v -> addSymptom("Sore Throat", "soreThroat", soreThroatContainer, "0"));
+        addLossOfTasteButton.setOnClickListener(v -> addSymptom("Loss of Taste", "lossOfTaste", lossOfTasteContainer, "0"));
+        addLossOfSmellButton.setOnClickListener(v -> addSymptom("Loss of Smell", "lossOfSmell", lossOfSmellContainer, "0"));
+        addHeadacheButton.setOnClickListener(v -> addSymptom("Headache", "headache", headacheContainer, "0"));
+        addRashButton.setOnClickListener(v -> addSymptom("Rash", "rash", rashContainer, "0"));
+        addNauseaButton.setOnClickListener(v -> addSymptom("Nausea", "nausea", nauseaContainer, "0"));
+        addVomitingButton.setOnClickListener(v -> addSymptom("Vomiting", "vomiting", vomitingContainer, "0"));
+        addDiarrheaButton.setOnClickListener(v -> addSymptom("Diarrhea", "diarrhea", diarrheaContainer, "0"));
+        addConfusionButton.setOnClickListener(v -> addSymptom("Confusion", "confusion", confusionContainer, "0"));
+        addDizzyButton.setOnClickListener(v -> addSymptom("Dizzy", "dizzy", dizzyContainer, "0"));
     }
 
     private void setupControlButtons() {
-        saveButton.setOnClickListener(v -> saveData());
         clearButton.setOnClickListener(v -> clearData());
+        saveButton.setOnClickListener(v -> saveData());
         addNewButton.setOnClickListener(v -> showCustomSymptomDialog());
     }
 
@@ -187,47 +191,38 @@ public class SymptomsActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void addCustomSymptom(String symptomName, String maxLabel) {
-        int customId = customSymptomCounter.incrementAndGet();
-        String key = "custom_" + customId;
-
-        // dupe check
-        for (String existingKey : symptomValues.keySet()) {
-            if (activeSymptomViews.containsKey(existingKey)) {
-                View existingView = activeSymptomViews.get(existingKey);
-                if (existingView != null && existingView instanceof ViewGroup) {
-                    ViewGroup viewGroup = (ViewGroup) existingView;
-                    if (viewGroup.getChildCount() > 0) {
-                        View headerLayout = viewGroup.getChildAt(0);
-                        if (headerLayout instanceof ViewGroup) {
-                            ViewGroup headerGroup = (ViewGroup) headerLayout;
-                            if (headerGroup.getChildCount() > 0) {
-                                View nameView = headerGroup.getChildAt(0);
-                                if (nameView instanceof TextView) {
-                                    String existingName = ((TextView) nameView).getText().toString();
-                                    if (existingName.equalsIgnoreCase(symptomName)) {
-                                        Toast.makeText(this, "Symptom already exists in active symptoms", Toast.LENGTH_SHORT).show();
-                                        return;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+    /**
+     * Add a custom symptom to screen
+     * @param symptomName
+     * @param severity
+     */
+    private void addCustomSymptom(String symptomName, String severity) {
+        String key = turnSymptomIntoKey(symptomName);
+        // Dupe check
+        if (symptomValues.containsKey(key)) {
+            Toast.makeText(this, "Symptom already exists in active symptoms", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        LinearLayout customContainer = createCustomSymptomContainer(symptomName, key, maxLabel);
+        // Add custom symptom container
+        LinearLayout customContainer = createCustomSymptomContainer(symptomName, key, severity);
         customSymptomsContainer.addView(customContainer);
         customSymptomContainers.put(key, customContainer);
 
         symptomValues.put(key, 0);
-
-        addSymptom(symptomName, key, customContainer, maxLabel);
+        addSymptom(symptomName, key, customContainer, severity);
 
         Toast.makeText(this, "Added custom symptom: " + symptomName, Toast.LENGTH_SHORT).show();
+
     }
 
+    /**
+     * Setup custom symptom container
+     * @param symptomName
+     * @param key
+     * @param maxLabel
+     * @return
+     */
     private LinearLayout createCustomSymptomContainer(String symptomName, String key, String maxLabel) {
         LinearLayout container = new LinearLayout(this);
         container.setOrientation(LinearLayout.HORIZONTAL);
@@ -359,22 +354,37 @@ public class SymptomsActivity extends AppCompatActivity {
         symptomValues.put("dizzy", 0);
     }
 
-    private void addSymptom(String displayName, String key, LinearLayout originalContainer, String maxLabel) {
+    /**
+     * Adds selected active symptom the container and tracks severity
+     * @param displayName
+     * @param key
+     * @param symptomContainer
+     * @param severity
+     */
+    private void addSymptom(String displayName, String key, LinearLayout symptomContainer, String severity) {
         if (activeSymptomViews.containsKey(key)) {
             Toast.makeText(this, displayName + " is already active", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        originalContainer.setVisibility(View.GONE);
+        symptomContainer.setVisibility(View.GONE);
+        symptomValues.put(key,Integer.parseInt(severity));
 
-        View symptomView = createExpandedSymptomView(displayName, key, maxLabel, originalContainer);
+        View symptomView = createExpandedSymptomView(displayName, key, symptomContainer, Integer.parseInt(severity));
 
         activeSymptomsContainer.addView(symptomView, 0);
-
         activeSymptomViews.put(key, symptomView);
     }
 
-    private View createExpandedSymptomView(String displayName, String key, String maxLabel, LinearLayout originalContainer) {
+    /**
+     * Expanded container for active symptom so that severity can be indicated
+     * @param displayName
+     * @param key
+     * @param originalContainer
+     * @param severity
+     * @return
+     */
+    private View createExpandedSymptomView(String displayName, String key, LinearLayout originalContainer, int severity) {
         LinearLayout mainContainer = new LinearLayout(this);
         mainContainer.setOrientation(LinearLayout.VERTICAL);
         LinearLayout.LayoutParams mainParams = new LinearLayout.LayoutParams(
@@ -393,6 +403,7 @@ public class SymptomsActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         headerLayout.setPadding(0, 0, 0, dpToPx(8));
 
+        // Symptom
         TextView nameText = new TextView(this);
         LinearLayout.LayoutParams nameParams = new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
@@ -402,18 +413,20 @@ public class SymptomsActivity extends AppCompatActivity {
         nameText.setTextSize(18);
         nameText.setTypeface(null, android.graphics.Typeface.BOLD);
 
+        // Severity numerical value
         TextView valueDisplay = new TextView(this);
         LinearLayout.LayoutParams valueParams = new LinearLayout.LayoutParams(
                 dpToPx(32), dpToPx(32));
         valueParams.setMargins(dpToPx(8), 0, dpToPx(8), 0);
         valueDisplay.setLayoutParams(valueParams);
-        valueDisplay.setText("0");
+        valueDisplay.setText(String.valueOf(severity));
         valueDisplay.setTextColor(getResources().getColor(android.R.color.white, null));
         valueDisplay.setTextSize(14);
         valueDisplay.setTypeface(null, android.graphics.Typeface.BOLD);
         valueDisplay.setGravity(android.view.Gravity.CENTER);
         valueDisplay.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark, null));
 
+        // Remove symptom button
         Button removeButton = new Button(this);
         LinearLayout.LayoutParams removeParams = new LinearLayout.LayoutParams(
                 dpToPx(32), dpToPx(32));
@@ -429,13 +442,15 @@ public class SymptomsActivity extends AppCompatActivity {
         headerLayout.addView(valueDisplay);
         headerLayout.addView(removeButton);
 
+        // Drag bar to adjust severity
         SeekBar seekBar = new SeekBar(this);
         seekBar.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         seekBar.setMax(10);
-        seekBar.setProgress(0);
+        seekBar.setProgress(severity);
 
+        // Drag bar Labels
         LinearLayout labelsLayout = new LinearLayout(this);
         labelsLayout.setOrientation(LinearLayout.HORIZONTAL);
         labelsLayout.setLayoutParams(new LinearLayout.LayoutParams(
@@ -456,7 +471,7 @@ public class SymptomsActivity extends AppCompatActivity {
         LinearLayout.LayoutParams maxLabelParams = new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         maxLabelText.setLayoutParams(maxLabelParams);
-        maxLabelText.setText(maxLabel);
+        maxLabelText.setText("Severe");
         maxLabelText.setTextColor(getResources().getColor(android.R.color.darker_gray, null));
         maxLabelText.setTextSize(12);
         maxLabelText.setTypeface(null, android.graphics.Typeface.BOLD);
@@ -477,7 +492,7 @@ public class SymptomsActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        updateSliderAndDisplay(seekBar, valueDisplay, 0);
+        updateSliderAndDisplay(seekBar, valueDisplay, severity);
 
         mainContainer.addView(headerLayout);
         mainContainer.addView(seekBar);
@@ -486,7 +501,12 @@ public class SymptomsActivity extends AppCompatActivity {
         return mainContainer;
     }
 
-    private void removeSymptom(String key, LinearLayout originalContainer) {
+    /**
+     * Remove an active symptom
+     * @param key
+     * @param symptomContainer
+     */
+    private void removeSymptom(String key, LinearLayout symptomContainer) {
         View activeView = activeSymptomViews.get(key);
         if (activeView != null) {
             activeSymptomsContainer.removeView(activeView);
@@ -494,9 +514,15 @@ public class SymptomsActivity extends AppCompatActivity {
         }
 
         symptomValues.put(key, 0);
-        originalContainer.setVisibility(View.VISIBLE);
+        symptomContainer.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Updating numerical slider display to show severity
+     * @param slider
+     * @param valueDisplay
+     * @param progress
+     */
     private void updateSliderAndDisplay(SeekBar slider, TextView valueDisplay, int progress) {
         int color;
         if (progress <= 3) {
@@ -519,9 +545,15 @@ public class SymptomsActivity extends AppCompatActivity {
         return Math.round(dp * density);
     }
 
+    /**
+     * Saving symptom data when the saveButton is clicked
+     */
     private void saveData() {
         StringBuilder message = new StringBuilder("Manually saved symptoms: ");
         boolean hasActiveSymptoms = false;
+        // Tools for saving symptom data to Database
+        String date = getDate();
+        SymptomDatabaseHelper databaseHelper = new SymptomDatabaseHelper(SymptomsActivity.this);
 
         for (Map.Entry<String, Integer> entry : symptomValues.entrySet()) {
             if (entry.getValue() > 0) {
@@ -530,6 +562,8 @@ public class SymptomsActivity extends AppCompatActivity {
                 }
                 message.append(entry.getKey()).append("=").append(entry.getValue());
                 hasActiveSymptoms = true;
+                // Save symptom to database
+                databaseHelper.insertSymptom(date, entry.getKey(), entry.getValue().toString());
             }
         }
 
@@ -539,15 +573,17 @@ public class SymptomsActivity extends AppCompatActivity {
 
         Toast.makeText(this, message.toString(), Toast.LENGTH_LONG).show();
 
+        // Return to main screen
         Intent intent = new Intent(SymptomsActivity.this, MainActivity.class);
         intent.putExtra("SYMPTOMS_DATA", getSymptomValues());
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
 
-        // **DATA OUTPUT TO MAIN APP BUILD HERE**
-
     }
 
+    /**
+     * Clear selected symptom data
+     */
     private void clearData() {
         activeSymptomsContainer.removeAllViews();
         activeSymptomViews.clear();
@@ -576,17 +612,125 @@ public class SymptomsActivity extends AppCompatActivity {
         Toast.makeText(this, "All data cleared", Toast.LENGTH_SHORT).show();
     }
 
-    private void addNewEntry() {
-        showCustomSymptomDialog();
+    /**
+     * Getting the date in the standard format: Month D, YYYY
+     * @return
+     */
+    private String getDate(){
+        LocalDate date = LocalDate.now();
+        String month = date.getMonth().toString();
+        String day = String.valueOf(date.getDayOfMonth());
+        String year = String.valueOf(date.getYear());
+        return month + " " + day + ", " + year;
     }
 
-    private HashMap<String, Integer> getSymptomValues(){
-        HashMap<String, Integer> activeSymptoms = new HashMap<String, Integer>();
+    /**
+     * Gets list of active symptoms
+     * @return activeSymptoms
+     */
+    private HashMap<String, String> getSymptomValues(){
+        HashMap<String, String> activeSymptoms = new HashMap<String, String>();
         for (Map.Entry<String, Integer> entry : symptomValues.entrySet()) {
             if (entry.getValue() != 0) {
-                activeSymptoms.put(entry.getKey(), entry.getValue());
+                activeSymptoms.put(entry.getKey(), entry.getValue().toString());
             }
         }
         return activeSymptoms;
+    }
+
+    /**
+     * Loads any previous symptom day for the day
+     */
+    private void loadSymptomsFromDatabase() {
+        clearData();
+        SymptomDatabaseHelper dbHelper = new SymptomDatabaseHelper(this);
+
+        SymptomDay symptomDay = dbHelper.getSymptomsForDate(getDate());
+        if (symptomDay == null) {
+            return;
+        }
+
+        for (Map.Entry<String, String> entry : symptomDay.getSymptoms().entrySet()){
+            LinearLayout symptomContainer = getSymptomContainer(entry.getKey());
+            symptomValues.replace(entry.getKey(), Integer.parseInt(entry.getValue()));
+
+            /*
+            // If it's not a default symptom and instead a custom symptom
+            if (symptomContainer == null){
+                symptomContainer = customSymptomContainers.get(entry.getKey());
+            } */
+
+            addSymptom(turnKeyIntoDisplay(entry.getKey()), entry.getKey(), symptomContainer, entry.getValue());
+        }
+
+    }
+
+    /**
+     * Turns the key value in symptomValues to the Display Name
+     * @param key
+     * @return
+     */
+    private String turnKeyIntoDisplay(String key) {
+        String result = key.replaceAll("(?<!^)(?=[A-Z])", " ");
+        return Character.toUpperCase(result.charAt(0)) + result.substring(1);
+    }
+
+    /**
+     * Returns the container for a given key
+     * @param key
+     * @return
+     */
+    private LinearLayout getSymptomContainer(@NonNull String key){
+        LinearLayout container;
+        switch (key) {
+            case "chestPain": return chestPainContainer;
+            case "shortnessOfBreath": return breathContainer;
+            case "bleeding": return bleedingContainer;
+            case "fever": return feverContainer;
+            case "chills": return chillsContainer;
+            case "muscleAches": return muscleAchesContainer;
+            case "soreThroat": return soreThroatContainer;
+            case "lossOfTaste": return lossOfTasteContainer;
+            case "lossOfSmell": return lossOfSmellContainer;
+            case "headache": return headacheContainer;
+            case "rash": return rashContainer;
+            case "nausea": return nauseaContainer;
+            case "vomiting": return vomitingContainer;
+            case "diarrhea": return diarrheaContainer;
+            case "confusion": return confusionContainer;
+            case "dizzy": return dizzyContainer;
+            default: return null; // was a custom symptom
+        }
+    }
+
+
+    /**
+     * Turn the given symptom into a key for symptomValues
+     * @param symptom
+     * @return
+     */
+    private String turnSymptomIntoKey(String symptom){
+        if (symptom == null || symptom.trim().isEmpty()) return "";
+
+        String[] words = symptom.trim().split("[\\s\\-_+]+");
+        StringBuilder key = new StringBuilder();
+
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i].replaceAll("[^a-zA-Z0-0]", ""); // Remove remaining special characters
+            if (word.isEmpty()) continue;
+
+            if (i == 0) {
+                // First word: completely lowercase
+                key.append(word.toLowerCase());
+            } else {
+                // Subsequent words: capitalize first letter, lower the rest
+                key.append(Character.toUpperCase(word.charAt(0)));
+                if (word.length() > 1) {
+                    key.append(word.substring(1).toLowerCase());
+                }
+            }
+        }
+
+        return key.toString();
     }
 }

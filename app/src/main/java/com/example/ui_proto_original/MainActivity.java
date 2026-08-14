@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (intent != null && intent.hasExtra("SYMPTOMS_DATA")) {
             @SuppressWarnings("unchecked")
-            HashMap<String, Integer> activeSymptoms = (HashMap<String, Integer>) intent.getSerializableExtra("SYMPTOMS_DATA");
+            HashMap<String, String> activeSymptoms = (HashMap<String, String>) intent.getSerializableExtra("SYMPTOMS_DATA");
 
             if (activeSymptoms != null && activeSymptoms.isEmpty()){
                 clearSymptoms();
@@ -53,8 +54,25 @@ public class MainActivity extends AppCompatActivity {
                 addSymptoms(activeSymptoms);
             }
         }
+        loadTodaySymptoms();
+        if (symptomsContainer.getChildCount() == 0){
+            addDefaultSymptomsText();
+        }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        clearSymptoms();
+        loadTodaySymptoms();
+        if (symptomsContainer.getChildCount() == 0){
+            addDefaultSymptomsText();
+        }
+    }
+
+    /**
+     * Puts a default text in symptoms list if there are no active symptoms
+     */
     private void addDefaultSymptomsText(){
         TextView text = new TextView(this);
         LinearLayout.LayoutParams nameParams = new LinearLayout.LayoutParams(
@@ -68,10 +86,13 @@ public class MainActivity extends AppCompatActivity {
         symptomsContainer.addView(text);
     }
 
-
-    protected void addSymptoms(Map<String, Integer> activeSymptoms){
+    /**
+     * Adds active symptoms to the list
+     * @param activeSymptoms
+     */
+    protected void addSymptoms(Map<String, String> activeSymptoms){
         symptomsContainer.removeAllViews();
-        for (Map.Entry<String, Integer> entry : activeSymptoms.entrySet()) {
+        for (Map.Entry<String, String> entry : activeSymptoms.entrySet()) {
             LinearLayout rowLayout = new LinearLayout(this);
             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
             rowLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -87,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             TextView severity = new TextView(this);
             LinearLayout.LayoutParams severityParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
             severity.setLayoutParams(severityParams);
-            severity.setText(String.valueOf(entry.getValue()));
+            severity.setText(entry.getValue());
             severity.setTextSize(18);
             severity.setGravity(Gravity.CENTER);
             severity.setTextColor(getResources().getColor(R.color.black, null));
@@ -96,14 +117,42 @@ public class MainActivity extends AppCompatActivity {
             rowLayout.addView(severity);
             symptomsContainer.addView(rowLayout);
         }
-
     }
 
+    /**
+     * Clears symptomsContainer
+     */
     protected void clearSymptoms(){
         symptomsContainer.removeAllViews();
         addDefaultSymptomsText();
     }
 
+    /**
+     * Load today's symptoms from database
+     */
+    private void loadTodaySymptoms() {
+        SymptomDatabaseHelper dbHelper = new SymptomDatabaseHelper(this);
+
+        SymptomDay symptomDay = dbHelper.getSymptomsForDate(getDate());
+
+        symptomsContainer.removeAllViews();
+
+        if (symptomDay != null) {
+            addSymptoms(symptomDay.getSymptoms());
+        }
+    }
+
+    /**
+     * Get today's date
+     * @return date: as Month D, YYYY
+     */
+    private String getDate(){
+        LocalDate date = LocalDate.now();
+        String month = date.getMonth().toString();
+        String day = String.valueOf(date.getDayOfMonth());
+        String year = String.valueOf(date.getYear());
+        return month + " " + day + ", " + year;
+    }
 
     private String reformatSymptom(String symptom){
         String result = symptom.replaceAll("(?<!^)(?=[A-Z])", " ");

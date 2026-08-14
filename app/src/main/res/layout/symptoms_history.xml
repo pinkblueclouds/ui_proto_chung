@@ -18,100 +18,51 @@
         android:textSize="36sp"
         android:textStyle="bold" />
 
+
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/CalendarTheme"
+        android:dateTextAppearance="@style/LargeCalendarDates"
+        android:weekDayTextAppearance="@style/LargeCalendarWeekdays"
+        android:showWeekNumber="false" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/symptomsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:padding="6dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:layout_margin="8dp">
 
-        <TextView
-            android:id="@+id/previousMonthButton"
+        <Button
+            android:id="@+id/symptomsGraph"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/white"
-            android:gravity="center"
-            android:text="&lt;"
-            android:textSize="32sp"
-            android:textColor="@color/black"/>
+            android:backgroundTint="#00FFFF"
+            android:text="Graph"
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
 
-        <TextView
-            android:id="@+id/dateText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:background="@color/white"
-            android:gravity="center"
-            android:text="January 2001"
-            android:textSize="28sp"
-            android:textColor="@color/black"/>
-
-        <TextView
-            android:id="@+id/nextMonthButton"
+        <Button
+            android:id="@+id/exportButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/white"
-            android:gravity="center"
-            android:text="&gt;"
-            android:textSize="32sp"
-            android:textColor="@color/black"/>
+            android:backgroundTint="#D3D3D3"
+            android:text="Export"
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
 
     </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/calendarContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="280dp"
-            android:orientation="vertical">
-
-        </LinearLayout>
-
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:fillViewport="true"
-            android:background="@color/white"
-            android:padding="6dp">
-
-            <LinearLayout
-                android:id="@+id/datesWithSymptomsContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-            </LinearLayout>
-
-        </ScrollView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:layout_margin="8dp">
-
-            <Button
-                android:id="@+id/symptomsGraph"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="#00FFFF"
-                android:text="Graph"
-                android:textColor="@color/black"
-                android:textSize="20sp"/>
-
-            <Button
-                android:id="@+id/exportButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="#D3D3D3"
-                android:text="Export"
-                android:textColor="@color/black"
-                android:textSize="20sp"/>
-
-        </LinearLayout>
 </LinearLayout>
