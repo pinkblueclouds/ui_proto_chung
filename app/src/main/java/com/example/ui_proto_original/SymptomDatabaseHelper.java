@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -52,6 +53,10 @@ public class SymptomDatabaseHelper extends SQLiteOpenHelper {
         database.close();
     }
 
+    /**
+     * Get a list of symptoms separated by date
+     * @return
+     */
     public List<SymptomDay> getGroupedSymptomDays() {
         Map<String, Map<String, String>> groupedData = new LinkedHashMap<>();
         SQLiteDatabase database = this.getReadableDatabase();
@@ -81,6 +86,11 @@ public class SymptomDatabaseHelper extends SQLiteOpenHelper {
         return resultList;
     }
 
+    /**
+     * Get the symptoms for a specific date
+     * @param date
+     * @return
+     */
     public SymptomDay getSymptomsForDate(String date) {
         Map<String, String> symptomsList = new HashMap<>();
         SQLiteDatabase database = this.getReadableDatabase();
@@ -105,6 +115,48 @@ public class SymptomDatabaseHelper extends SQLiteOpenHelper {
         }
 
         return new SymptomDay(date, symptomsList);
+    }
+
+    /**
+     * Get a list of symptoms from the specified past number of days
+     * @param numberOfDays
+     * @return
+     */
+    public ArrayList<String> getSymptomsForPastNDays(int numberOfDays) {
+        ArrayList<String> recentSymptoms = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+
+        for (int i = 0; i < numberOfDays; i++) {
+            LocalDate date = today.minusDays(i);
+            String formattedDate = formatDateString(date);
+            SymptomDay dayData = getSymptomsForDate(formattedDate);
+
+            // If there were symptoms for that day, check and add to list
+            if (dayData != null) {
+                Map<String, String> symptoms = dayData.getSymptoms();
+                for (String symptom : symptoms.keySet()) {
+                    if (!recentSymptoms.contains(symptom)) {
+                        recentSymptoms.add(symptom);
+                    }
+                }
+            }
+        }
+
+        return recentSymptoms;
+    }
+
+
+
+    /**
+     * Helper to format LocalDate into "MONTH D, YYYY" (e.g. "AUGUST 14, 2026")
+     * @param date
+     * @return reformatted date
+     */
+    private String formatDateString(LocalDate date) {
+        String month = date.getMonth().toString();
+        String day = String.valueOf(date.getDayOfMonth());
+        String year = String.valueOf(date.getYear());
+        return month + " " + day + ", " + year;
     }
 
 }

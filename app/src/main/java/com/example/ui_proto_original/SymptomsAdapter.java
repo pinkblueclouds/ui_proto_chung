@@ -85,8 +85,5 @@ public class SymptomsAdapter extends RecyclerView.Adapter<SymptomsAdapter.ViewHo
         }
     }
 
-    private String reformatSymptom(String symptom){
-        String result = symptom.replaceAll("(?<!^)(?=[A-Z])", " ");
-        return Character.toUpperCase(result.charAt(0)) + result.substring(1);
-    }
+
 }

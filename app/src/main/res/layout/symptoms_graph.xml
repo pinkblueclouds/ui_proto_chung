@@ -4,6 +4,94 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@color/white"
+        android:elevation="4dp"
+        android:gravity="center"
+        android:padding="4dp"
+        android:text="Symptom Graph"
+        android:textColor="@color/black"
+        android:textSize="36sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal">
+
+        <!--
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:backgroundTint="@color/white"
+            android:text="Past 7 days"
+            android:textColor="@color/black"
+            android:textAllCaps="false"
+            />
+           -->
+        <Spinner
+            android:id="@+id/timeDropdown"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1.0"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:spinnerMode="dropdown"
+            />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:backgroundTint="@color/white"
+            android:text="Line Graph"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textAllCaps="false"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.0"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="start"
+        android:layout_margin="8dp"
+        android:paddingHorizontal="8dp"
+        android:text="Symptom Graph Key"
+        android:textSize="20dp"
+        android:textColor="@color/black"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@color/white"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/symptomsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="16dp"/>
+
+    </ScrollView>
 
 
 </LinearLayout>

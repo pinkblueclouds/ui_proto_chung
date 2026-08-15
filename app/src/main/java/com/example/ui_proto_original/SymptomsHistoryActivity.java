@@ -67,6 +67,7 @@ public class SymptomsHistoryActivity extends AppCompatActivity {
             currentDisplayCalendar.set(Calendar.YEAR, year);
             currentDisplayCalendar.set(Calendar.MONTH, month);
             currentDisplayCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            scrollToDate();
         });
 
         graphButton = findViewById(R.id.symptomsGraph);
