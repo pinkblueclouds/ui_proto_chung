@@ -34,7 +34,7 @@ public class SymptomsAdapter extends RecyclerView.Adapter<SymptomsAdapter.ViewHo
         SymptomDay day = symptomDays.get(position);
 
         // Guard against null objects
-        if (day == null || day.getSymptoms() == null) {
+        if (day == null || day.getFullSymptomList() == null) {
             return;
         }
 
@@ -42,7 +42,7 @@ public class SymptomsAdapter extends RecyclerView.Adapter<SymptomsAdapter.ViewHo
         holder.textDate.setText(day.getDate());
         holder.symptomsContainer.removeAllViews();
 
-        for (Map.Entry<String, String> entry : day.getSymptoms().entrySet()) {
+        for (SymptomRecord record : day.getFullSymptomList()) {
             LinearLayout rowLayout = new LinearLayout(holder.itemView.getContext());
             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
             rowLayout.setLayoutParams(new LinearLayout.LayoutParams(
@@ -51,7 +51,7 @@ public class SymptomsAdapter extends RecyclerView.Adapter<SymptomsAdapter.ViewHo
 
             TextView symptom = new TextView(holder.itemView.getContext());
             symptom.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 2.0f));
-            symptom.setText(entry.getKey());
+            symptom.setText(record.getSymptom());
             symptom.setTextSize(16);
             symptom.setTextColor(Color.BLACK);
             symptom.setPadding(16, 0, 0, 0);
@@ -59,12 +59,20 @@ public class SymptomsAdapter extends RecyclerView.Adapter<SymptomsAdapter.ViewHo
             TextView severity = new TextView(holder.itemView.getContext());
             severity.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
             severity.setGravity(Gravity.CENTER);
-            severity.setText(entry.getValue());
+            severity.setText(record.getSeverity());
             severity.setTextSize(16);
             severity.setTextColor(Color.BLACK);
 
+            TextView timestamp = new TextView(holder.itemView.getContext());
+            timestamp.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+            timestamp.setGravity(Gravity.CENTER);
+            timestamp.setText(record.getTime());
+            timestamp.setTextSize(16);
+            timestamp.setTextColor(Color.BLACK);
+
             rowLayout.addView(symptom);
             rowLayout.addView(severity);
+            rowLayout.addView(timestamp);
             holder.symptomsContainer.addView(rowLayout);
         }
     }

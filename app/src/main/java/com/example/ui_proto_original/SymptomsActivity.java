@@ -17,14 +17,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 //import java.util.concurrent.atomic.AtomicInteger;
 
 public class SymptomsActivity extends AppCompatActivity {
 
     private LinearLayout activeSymptomsContainer;
     private LinearLayout customSymptomsContainer;
+    private Map<String, Integer> oldSymptomValues = new HashMap<>();
     private Map<String, Integer> symptomValues = new HashMap<>();
     private Map<String, View> activeSymptomViews = new HashMap<>();
     private Map<String, LinearLayout> customSymptomContainers = new HashMap<>();
@@ -485,6 +488,11 @@ public class SymptomsActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 symptomValues.put(key, progress);
                 updateSliderAndDisplay(seekBar, valueDisplay, progress);
+
+                if (progress >= 8) {
+                    nameText.setTextColor(getColor(android.R.color.holo_red_dark));
+                }
+                else { nameText.setTextColor(getColor(R.color.black)); }
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -556,14 +564,14 @@ public class SymptomsActivity extends AppCompatActivity {
         SymptomDatabaseHelper databaseHelper = new SymptomDatabaseHelper(SymptomsActivity.this);
 
         for (Map.Entry<String, Integer> entry : symptomValues.entrySet()) {
-            if (entry.getValue() > 0) {
+            if (entry.getValue() > 0 && !Objects.equals(entry.getValue(), oldSymptomValues.get(entry.getKey()))) {
                 if (hasActiveSymptoms) {
                     message.append(", ");
                 }
                 message.append(entry.getKey()).append("=").append(entry.getValue());
                 hasActiveSymptoms = true;
                 // Save symptom to database
-                databaseHelper.insertSymptom(date, entry.getKey(), entry.getValue().toString());
+                databaseHelper.insertSymptom(date, entry.getKey(), entry.getValue().toString(), getTime());
             }
         }
 
@@ -625,6 +633,18 @@ public class SymptomsActivity extends AppCompatActivity {
     }
 
     /**
+     *  Get the time in the format HH:MM
+     * @return timestamp
+     */
+    private String getTime(){
+        LocalDateTime time = LocalDateTime.now();
+        int hour = time.getHour();
+        int minute = time.getMinute();
+        return hour + ":" + minute;
+    }
+
+
+    /**
      * Gets list of active symptoms
      * @return activeSymptoms
      */
@@ -650,17 +670,23 @@ public class SymptomsActivity extends AppCompatActivity {
             return;
         }
 
-        for (Map.Entry<String, String> entry : symptomDay.getSymptoms().entrySet()){
-            LinearLayout symptomContainer = getSymptomContainer(entry.getKey());
-            symptomValues.replace(entry.getKey(), Integer.parseInt(entry.getValue()));
+        // Based on the symptom records for the day, sets up the symptomValues List
+        for (SymptomRecord record : symptomDay.getFullSymptomList()){
+            oldSymptomValues.put(record.getSymptom(), Integer.parseInt(record.getSeverity()));
+            symptomValues.put(record.getSymptom(), Integer.parseInt(record.getSeverity()));
+        }
 
-            /*
+        for (Map.Entry<String, Integer> entry : symptomValues.entrySet()) {
+            if (entry.getValue() != 0) {
+                LinearLayout symptomContainer = getSymptomContainer(entry.getKey());
+                /*
             // If it's not a default symptom and instead a custom symptom
             if (symptomContainer == null){
                 symptomContainer = customSymptomContainers.get(entry.getKey());
             } */
 
-            addSymptom(turnKeyIntoDisplay(entry.getKey()), entry.getKey(), symptomContainer, entry.getValue());
+                addSymptom(turnKeyIntoDisplay(entry.getKey()), entry.getKey(), symptomContainer, String.valueOf(entry.getValue()));
+            }
         }
 
     }

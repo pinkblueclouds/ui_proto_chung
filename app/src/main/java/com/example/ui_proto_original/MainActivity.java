@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         symptomsContainer.removeAllViews();
 
         if (symptomDay != null) {
-            addSymptoms(symptomDay.getSymptoms());
+            addSymptoms(symptomDay.getRecentSymptoms());
         }
     }
 

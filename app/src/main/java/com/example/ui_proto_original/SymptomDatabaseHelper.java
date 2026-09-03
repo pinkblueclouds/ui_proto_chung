@@ -23,6 +23,7 @@ public class SymptomDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_DATE = "date";
     private static final String COLUMN_NAME = "symptom_name";
     private static final String COLUMN_SEVERITY = "severity";
+    private static final String COLUMN_TIME = "time";
 
     public SymptomDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -32,7 +33,7 @@ public class SymptomDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase database) {
         String createTableQuery = "CREATE TABLE " + TABLE_SYMPTOMS + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_DATE + " TEXT, " + COLUMN_NAME + " TEXT, " + COLUMN_SEVERITY + " TEXT)";
+                COLUMN_DATE + " TEXT, " + COLUMN_NAME + " TEXT, " + COLUMN_SEVERITY + " TEXT, " + COLUMN_TIME + " TEXT)";
         database.execSQL(createTableQuery);
     }
 
@@ -42,12 +43,13 @@ public class SymptomDatabaseHelper extends SQLiteOpenHelper {
         onCreate(database);
     }
 
-    public void insertSymptom(String date, String symptom, String severity) {
+    public void insertSymptom(String date, String symptom, String severity, String time) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_DATE, date);
         values.put(COLUMN_NAME, symptom);
         values.put(COLUMN_SEVERITY, severity);
+        values.put(COLUMN_TIME, time);
 
         database.insert(TABLE_SYMPTOMS, null, values);
         database.close();
@@ -58,7 +60,7 @@ public class SymptomDatabaseHelper extends SQLiteOpenHelper {
      * @return
      */
     public List<SymptomDay> getGroupedSymptomDays() {
-        Map<String, Map<String, String>> groupedData = new LinkedHashMap<>();
+        Map<String, ArrayList<SymptomRecord>> groupedData = new LinkedHashMap<>();
         SQLiteDatabase database = this.getReadableDatabase();
 
         String selectQuery = "SELECT * FROM " + TABLE_SYMPTOMS + " ORDER BY " + COLUMN_ID + " DESC";
@@ -69,9 +71,10 @@ public class SymptomDatabaseHelper extends SQLiteOpenHelper {
                 String date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE));
                 String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME));
                 String severity = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SEVERITY));
+                String time = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TIME));
 
-                groupedData.putIfAbsent(date, new HashMap<>());
-                groupedData.get(date).put(name, severity);
+                groupedData.putIfAbsent(date, new ArrayList<>());
+                groupedData.get(date).add(new SymptomRecord(name, severity, time));
             } while (cursor.moveToNext());
         }
 
@@ -79,7 +82,7 @@ public class SymptomDatabaseHelper extends SQLiteOpenHelper {
         database.close();
 
         List<SymptomDay> resultList = new ArrayList<>();
-        for (Map.Entry<String, Map<String, String>> entry : groupedData.entrySet()) {
+        for (Map.Entry<String, ArrayList<SymptomRecord>> entry : groupedData.entrySet()) {
             resultList.add(new SymptomDay(entry.getKey(), entry.getValue()));
         }
 
@@ -92,7 +95,8 @@ public class SymptomDatabaseHelper extends SQLiteOpenHelper {
      * @return
      */
     public SymptomDay getSymptomsForDate(String date) {
-        Map<String, String> symptomsList = new HashMap<>();
+        //Map<String, String> symptomsList = new HashMap<>();
+        ArrayList<SymptomRecord> symptomsList = new ArrayList<>();
         SQLiteDatabase database = this.getReadableDatabase();
 
         String selectQuery = "SELECT * FROM " + TABLE_SYMPTOMS + " WHERE " + COLUMN_DATE + " = ?";
@@ -102,7 +106,8 @@ public class SymptomDatabaseHelper extends SQLiteOpenHelper {
             do {
                 String symptom = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME));
                 String severity = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SEVERITY));
-                symptomsList.put(symptom, severity);
+                String timestamp = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TIME));
+                symptomsList.add(new SymptomRecord(symptom,severity,timestamp));
             } while (cursor.moveToNext());
         }
 
@@ -133,8 +138,9 @@ public class SymptomDatabaseHelper extends SQLiteOpenHelper {
 
             // If there were symptoms for that day, check and add to list
             if (dayData != null) {
-                Map<String, String> symptoms = dayData.getSymptoms();
-                for (String symptom : symptoms.keySet()) {
+                //Map<String, String> symptoms = dayData.getSymptoms();
+                ArrayList<String> symptoms = dayData.getSimplifiedSymptomList();
+                for (String symptom : symptoms) {
                     if (!recentSymptoms.contains(symptom)) {
                         recentSymptoms.add(symptom);
                     }
