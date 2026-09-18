@@ -92,6 +92,13 @@ public class MainActivity extends AppCompatActivity {
      */
     protected void addSymptoms(Map<String, String> activeSymptoms){
         symptomsContainer.removeAllViews();
+        /**
+        for (Map.Entry<String, String> entry : activeSymptoms.entrySet()) {
+            if (entry.getValue().equals("0")) {
+                activeSymptoms.remove(entry.getKey(), entry.getValue());
+            }
+        } **/
+
         for (Map.Entry<String, String> entry : activeSymptoms.entrySet()) {
             LinearLayout rowLayout = new LinearLayout(this);
             rowLayout.setOrientation(LinearLayout.HORIZONTAL);

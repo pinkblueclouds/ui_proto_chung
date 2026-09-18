@@ -151,6 +151,21 @@ public class SymptomDatabaseHelper extends SQLiteOpenHelper {
         return recentSymptoms;
     }
 
+    /**
+     * Gets the symptom data from the past N days
+     * @param numberOfDays
+     * @return
+     */
+    public ArrayList<SymptomDay> getSymptomDataForNDays(int numberOfDays) {
+        LocalDate date = LocalDate.now();
+        ArrayList<SymptomDay> symptomData = new ArrayList<>();
+        for (int i = numberOfDays; i >= 0; i--) {
+            SymptomDay dayData = getSymptomsForDate(formatDateString(date.minusDays(i)));
+            if (dayData != null) symptomData.add(dayData);
+        }
+        return symptomData;
+    }
+
 
 
     /**

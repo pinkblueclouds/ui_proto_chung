@@ -422,7 +422,8 @@ public class SymptomsActivity extends AppCompatActivity {
                 dpToPx(32), dpToPx(32));
         valueParams.setMargins(dpToPx(8), 0, dpToPx(8), 0);
         valueDisplay.setLayoutParams(valueParams);
-        valueDisplay.setText(String.valueOf(severity));
+        String severityValue = (severity == 0)? "5" : String.valueOf(severity);
+        valueDisplay.setText(severityValue);
         valueDisplay.setTextColor(getResources().getColor(android.R.color.white, null));
         valueDisplay.setTextSize(14);
         valueDisplay.setTypeface(null, android.graphics.Typeface.BOLD);
@@ -436,8 +437,8 @@ public class SymptomsActivity extends AppCompatActivity {
         removeButton.setLayoutParams(removeParams);
         removeButton.setText("X");
         removeButton.setTextSize(14);
-        removeButton.setTextColor(getResources().getColor(android.R.color.white, null));
-        removeButton.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark, null));
+        removeButton.setTextColor(getResources().getColor(R.color.black));
+        removeButton.setBackgroundColor(getResources().getColor(R.color.white));
         removeButton.setPadding(0,0,0,0);
         removeButton.setOnClickListener(v -> removeSymptom(key, originalContainer));
 
@@ -451,7 +452,7 @@ public class SymptomsActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         seekBar.setMax(10);
-        seekBar.setProgress(severity);
+        seekBar.setProgress((severity == 0)? 5 : severity);
 
         // Drag bar Labels
         LinearLayout labelsLayout = new LinearLayout(this);
@@ -489,10 +490,6 @@ public class SymptomsActivity extends AppCompatActivity {
                 symptomValues.put(key, progress);
                 updateSliderAndDisplay(seekBar, valueDisplay, progress);
 
-                if (progress >= 8) {
-                    nameText.setTextColor(getColor(android.R.color.holo_red_dark));
-                }
-                else { nameText.setTextColor(getColor(R.color.black)); }
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -500,7 +497,10 @@ public class SymptomsActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        updateSliderAndDisplay(seekBar, valueDisplay, severity);
+        updateSliderAndDisplay(seekBar, valueDisplay, (severity == 0)? 5 : severity);
+        if (severity == 0) {
+            symptomValues.put(key, 5);
+        }
 
         mainContainer.addView(headerLayout);
         mainContainer.addView(seekBar);
@@ -571,7 +571,9 @@ public class SymptomsActivity extends AppCompatActivity {
                 message.append(entry.getKey()).append("=").append(entry.getValue());
                 hasActiveSymptoms = true;
                 // Save symptom to database
-                databaseHelper.insertSymptom(date, entry.getKey(), entry.getValue().toString(), getTime());
+                if (entry.getValue() != 0) {
+                    databaseHelper.insertSymptom(date, entry.getKey(), entry.getValue().toString(), getTime());
+                }
             }
         }
 
