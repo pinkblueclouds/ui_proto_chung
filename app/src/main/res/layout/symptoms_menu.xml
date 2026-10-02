@@ -64,7 +64,7 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:id="@+id/chestPainContainer"
+                android:id="@+id/bleedingContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
@@ -78,13 +78,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Chest Pain"
+                    android:text="Bleeding"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/addChestPainButton"
+                    android:id="@+id/addBleedingButton"
                     android:layout_width="60dp"
                     android:layout_height="36dp"
                     android:backgroundTint="@color/green"
@@ -126,7 +126,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/bleedingContainer"
+                android:id="@+id/chestPainContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
@@ -140,44 +140,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Bleeding"
+                    android:text="Chest Pain"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/addBleedingButton"
-                    android:layout_width="60dp"
-                    android:layout_height="36dp"
-                    android:backgroundTint="@color/green"
-                    android:paddingVertical="0dp"
-                    android:text="+"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/feverContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:background="@color/white"
-                android:elevation="1dp"
-                android:orientation="horizontal"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Fever"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/addFeverButton"
+                    android:id="@+id/addChestPainButton"
                     android:layout_width="60dp"
                     android:layout_height="36dp"
                     android:backgroundTint="@color/green"
@@ -219,7 +188,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/muscleAchesContainer"
+                android:id="@+id/confusionContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
@@ -233,230 +202,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Muscle Aches"
+                    android:text="Confusion"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/addMuscleAchesButton"
-                    android:layout_width="60dp"
-                    android:layout_height="36dp"
-                    android:backgroundTint="@color/green"
-                    android:paddingVertical="0dp"
-                    android:text="+"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/soreThroatContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:background="@color/white"
-                android:elevation="1dp"
-                android:orientation="horizontal"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Sore Throat"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/addSoreThroatButton"
-                    android:layout_width="60dp"
-                    android:layout_height="36dp"
-                    android:backgroundTint="@color/green"
-                    android:paddingVertical="0dp"
-                    android:text="+"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lossOfTasteContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:background="@color/white"
-                android:elevation="1dp"
-                android:orientation="horizontal"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Loss of Taste"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/addLossOfTasteButton"
-                    android:layout_width="60dp"
-                    android:layout_height="36dp"
-                    android:backgroundTint="@color/green"
-                    android:paddingVertical="0dp"
-                    android:text="+"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lossOfSmellContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:background="@color/white"
-                android:elevation="1dp"
-                android:orientation="horizontal"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Loss of Smell"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/addLossOfSmellButton"
-                    android:layout_width="60dp"
-                    android:layout_height="36dp"
-                    android:backgroundTint="@color/green"
-                    android:paddingVertical="0dp"
-                    android:text="+"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/headacheContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:background="@color/white"
-                android:elevation="1dp"
-                android:orientation="horizontal"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Headache"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/addHeadacheButton"
-                    android:layout_width="60dp"
-                    android:layout_height="36dp"
-                    android:backgroundTint="@color/green"
-                    android:paddingVertical="0dp"
-                    android:text="+"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/rashContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:background="@color/white"
-                android:elevation="1dp"
-                android:orientation="horizontal"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Rash"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/addRashButton"
-                    android:layout_width="60dp"
-                    android:layout_height="36dp"
-                    android:backgroundTint="@color/green"
-                    android:paddingVertical="0dp"
-                    android:text="+"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/nauseaContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:background="@color/white"
-                android:elevation="1dp"
-                android:orientation="horizontal"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Nausea"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/addNauseaButton"
-                    android:layout_width="60dp"
-                    android:layout_height="36dp"
-                    android:backgroundTint="@color/green"
-                    android:paddingVertical="0dp"
-                    android:text="+"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/vomitingContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:background="@color/white"
-                android:elevation="1dp"
-                android:orientation="horizontal"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Vomiting"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/addVomitingButton"
+                    android:id="@+id/addConfusionButton"
                     android:layout_width="60dp"
                     android:layout_height="36dp"
                     android:backgroundTint="@color/green"
@@ -498,37 +250,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/confusionContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:background="@color/white"
-                android:elevation="1dp"
-                android:orientation="horizontal"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Confusion"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/addConfusionButton"
-                    android:layout_width="60dp"
-                    android:layout_height="36dp"
-                    android:backgroundTint="@color/green"
-                    android:paddingVertical="0dp"
-                    android:text="+"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/dizzyContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -550,6 +271,285 @@
 
                 <Button
                     android:id="@+id/addDizzyButton"
+                    android:layout_width="60dp"
+                    android:layout_height="36dp"
+                    android:backgroundTint="@color/green"
+                    android:paddingVertical="0dp"
+                    android:text="+"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/feverContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"
+                android:elevation="1dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Fever"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/addFeverButton"
+                    android:layout_width="60dp"
+                    android:layout_height="36dp"
+                    android:backgroundTint="@color/green"
+                    android:paddingVertical="0dp"
+                    android:text="+"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/headacheContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"
+                android:elevation="1dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Headache"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/addHeadacheButton"
+                    android:layout_width="60dp"
+                    android:layout_height="36dp"
+                    android:backgroundTint="@color/green"
+                    android:paddingVertical="0dp"
+                    android:text="+"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lossOfSmellContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"
+                android:elevation="1dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Loss of Smell"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/addLossOfSmellButton"
+                    android:layout_width="60dp"
+                    android:layout_height="36dp"
+                    android:backgroundTint="@color/green"
+                    android:paddingVertical="0dp"
+                    android:text="+"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lossOfTasteContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"
+                android:elevation="1dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Loss of Taste"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/addLossOfTasteButton"
+                    android:layout_width="60dp"
+                    android:layout_height="36dp"
+                    android:backgroundTint="@color/green"
+                    android:paddingVertical="0dp"
+                    android:text="+"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/muscleAchesContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"
+                android:elevation="1dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Muscle Aches"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/addMuscleAchesButton"
+                    android:layout_width="60dp"
+                    android:layout_height="36dp"
+                    android:backgroundTint="@color/green"
+                    android:paddingVertical="0dp"
+                    android:text="+"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/nauseaContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"
+                android:elevation="1dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Nausea"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/addNauseaButton"
+                    android:layout_width="60dp"
+                    android:layout_height="36dp"
+                    android:backgroundTint="@color/green"
+                    android:paddingVertical="0dp"
+                    android:text="+"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/rashContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"
+                android:elevation="1dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Rash"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/addRashButton"
+                    android:layout_width="60dp"
+                    android:layout_height="36dp"
+                    android:backgroundTint="@color/green"
+                    android:paddingVertical="0dp"
+                    android:text="+"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/soreThroatContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"
+                android:elevation="1dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Sore Throat"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/addSoreThroatButton"
+                    android:layout_width="60dp"
+                    android:layout_height="36dp"
+                    android:backgroundTint="@color/green"
+                    android:paddingVertical="0dp"
+                    android:text="+"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/vomitingContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"
+                android:elevation="1dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Vomiting"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/addVomitingButton"
                     android:layout_width="60dp"
                     android:layout_height="36dp"
                     android:backgroundTint="@color/green"
