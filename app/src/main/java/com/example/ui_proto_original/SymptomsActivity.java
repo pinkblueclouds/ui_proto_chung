@@ -699,7 +699,8 @@ public class SymptomsActivity extends AppCompatActivity {
         SymptomDatabaseHelper databaseHelper = new SymptomDatabaseHelper(SymptomsActivity.this);
 
         for (Map.Entry<String, Integer> entry : symptomValues.entrySet()) {
-            if (entry.getValue() > 0 && !Objects.equals(entry.getValue(), oldSymptomValues.get(entry.getKey()))) {
+            if (!oldSymptomValues.containsKey(entry.getKey()) || oldSymptomValues.get(entry.getKey()) != entry.getValue()) {
+            //if (entry.getValue() > 0 && !Objects.equals(entry.getValue(), oldSymptomValues.get(entry.getKey()))) {
                 if (hasActiveSymptoms) {
                     message.append(", ");
                 }
